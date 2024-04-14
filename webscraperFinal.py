@@ -56,6 +56,7 @@ for idx, td_tag in enumerate(td_tags, start=1):
 # Find all <th> tags on the page
 th_tags = soup.find_all('th')
 
+
 # Writes the content of the <th> tags which represent the years
 row_counter = 1
 for idx, th_tag in enumerate(th_tags, start=1):
@@ -64,11 +65,7 @@ for idx, th_tag in enumerate(th_tags, start=1):
     
     # Move to the next row
     row_counter += 1
-    
-    # If we've reached the 12th row, move to the next column and reset the row counter
-    if row_counter > 12:
-        row_counter = 1
-        column_counter += 1
+
 
 # Create the subfolder if it doesn't exist
 subfolder = "Dataset"

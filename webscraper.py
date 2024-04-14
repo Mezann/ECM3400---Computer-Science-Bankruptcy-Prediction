@@ -19,52 +19,66 @@ response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
 
 # Find all <td> tags on the page
-td_tags = soup.find_all('td')
+td_tags = soup.find_all(['td'])
+
+# Filter out <td> tags containing the word "upgrade"
+td_data = []
+for tag in td_tags:
+    text = tag.get_text(strip=True)
+    if "upgrade" not in text.lower():
+        td_data.append(text)
 
 # Create a new Workbook
 wb = Workbook()
 ws = wb.active
 
+
+# Find all <th> tags on the page and how many years there are recorded
+th_tags = soup.find_all('th')
+th_num = 0
+for idx, th_tag in enumerate(th_tags, start=1):
+    th_num +=1
+
 # Write the "Name" column
 ws.cell(row=1, column=1, value="Name")
-for i in range(2,13):
-    ws.cell(row=i, column=1, value=name)  # Write the company name in the second row
+# Write the company name for each year
+for i in range(1, th_num + 1):
+    ws.cell(row=i, column=1, value=name)
 
 # Initialize counters
 row_counter = 1
-column_counter = 2
+column_counter = 1
 
-# Write the content of each <td> tag to the Excel sheet
-for idx, td_tag in enumerate(td_tags, start=1):
-    # Skip every 13th <td> tag
-    if idx % 13 == 0:
-        continue
-    
-    td_content = td_tag.get_text(strip=True)
+# Write the content of each <td> tag to the Excel sheet which represent the financial ratios
+for idx, td_content in enumerate(td_data, start=1):
+    # If the content represents a new category, create a new column
+    if any(category in td_content for category in ["Market Capitalization", "Market Cap Growth", "Enterprise Value",
+                                                    "PE Ratio", "PS Ratio", "PB Ratio", "P/FCF Ratio", "P/OCF Ratio",
+                                                    "EV/Sales Ratio", "EV/EBITDA Ratio", "EV/EBIT Ratio",
+                                                    "EV/FCF Ratio", "Debt / Equity Ratio", "Debt / EBITDA Ratio",
+                                                    "Debt / FCF Ratio", "Quick Ratio", "Current Ratio",
+                                                    "Asset Turnover", "Interest Coverage", "Return on Equity",
+                                                    "Return on Assets", "Return on Capital", "Earnings Yield",
+                                                    "FCF Yield", "Dividend Yield" ,"Payout Ratio", "Buyback Yield / Dilution", "Total Shareholder Return"]):
+        row_counter = 1  # Reset the row counter for a new category
+        column_counter += 1  # Move to the next column
+
     ws.cell(row=row_counter, column=column_counter, value=td_content)
+
+    # Move to the next row
+    row_counter += 1
+
+# Writes the content of the <th> tags which represent the years
+row_counter = 1
+for idx, th_tag in enumerate(th_tags, start=1):
+    th_content = th_tag.get_text(strip=True)
+    ws.cell(row=row_counter, column=column_counter, value=th_content)
     
     # Move to the next row
     row_counter += 1
+
     
-    # If we've reached the 12th row, move to the next column and reset the row counter
-    if row_counter > 12:
-        row_counter = 1
-        column_counter += 1
 
-# Add a column for years starting from 2023 to 2013
-years = range(2022, 2012, -1)
-for idx, year in enumerate(years, start=3):  # Start from 2 to place 2023 on the second row
-    ws.cell(row=idx, column=column_counter, value=str(year))
-
-# Add "Year" to the first row of the column
-ws.cell(row=1, column=column_counter).value = "Year"
-ws.cell(row=2, column=column_counter).value = "Current"
-
-# Create the subfolder if it doesn't exist
-subfolder = "Dataset"
-if not os.path.exists(subfolder):
-    os.makedirs(subfolder)
-
-# Save the Excel file into the subfolder with the company name
-file_path = os.path.join(subfolder, name + "_Ratios.xlsx")
+# Save the Excel file
+file_path = os.path.join("Dataset", name + "_Ratios.xlsx")
 wb.save(file_path)
