@@ -4,9 +4,10 @@ import requests
 from bs4 import BeautifulSoup
 from openpyxl import Workbook
 
+sector = input("Please input the sector you would like to obtain: ")
 
 # URL of the webpage
-url = "https://stockanalysis.com/stocks/sector/financials"
+url = "https://stockanalysis.com/stocks/sector/" + sector + "/"
 
 # Send a GET request to the URL
 response = requests.get(url)
@@ -27,6 +28,10 @@ column_counter = 1
 
 # Write the content of each <td> tag to the Excel sheet which represent the financial ratios
 for idx, td_tag in enumerate(td_tags, start=1):
+    # Makes it stop after tthe top 200 companies of that sector
+    if row_counter > 201:
+        break
+    # Only includes relevant important data, ignoring the rest
     if column_counter < 4:
         td_content = td_tag.get_text(strip=True)
         ws.cell(row=row_counter, column=column_counter, value=td_content)
@@ -36,8 +41,6 @@ for idx, td_tag in enumerate(td_tags, start=1):
     if column_counter == 8:
         column_counter  = 1
         row_counter +=1
-
-    
     
 
 # Find all <th> tags on the page
@@ -65,5 +68,5 @@ if not os.path.exists(subfolder):
     os.makedirs(subfolder)
 
 # Save the Excel file into the subfolder with the company name
-file_path = os.path.join(subfolder + "FinancialSectorTest_Ratios.xlsx")
+file_path = os.path.join(subfolder, sector + "SectorInformation.xlsx")
 wb.save(file_path)
