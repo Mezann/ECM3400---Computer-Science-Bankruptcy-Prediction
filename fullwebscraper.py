@@ -1,4 +1,3 @@
-
 import os
 import requests
 import openpyxl
@@ -49,7 +48,7 @@ def sector_scraper(sector):
     th_tags = soup.find_all('th')
 
 
-    # Writes the content of the <th> tags which represent the years
+    # Writes the content of the <th> tags which represent the headings
     row_counter = 1
     column_counter = 1
     for idx, th_tag in enumerate(th_tags, start=1):
@@ -108,7 +107,7 @@ def scrape_and_create_excel(sym, name, sector):
     # Write the "Name" column
     ws.cell(row=1, column=1, value="Name")
     # Write the company name for each year
-    for i in range(1, th_num + 1):
+    for i in range(2, th_num+1):
         ws.cell(row=i, column=1, value=name)
 
     # Initialize counters
@@ -174,11 +173,11 @@ def sector_selection(sector):
         ratio += 1
         # Do something with the values
         scrape_and_create_excel(sym, name, sector)
-        print("Ratio " + str(ratio) + " made: " + name + " ratio")
+        #print("Ratio " + str(ratio) + " made: " + name + " ratio")
 
 def remove_symbols(name):
-    # Define a regular expression pattern to match symbols
-    pattern = r'[^a-zA-Z0-9\s]'  # Matches any character that is not a letter, digit, or whitespace
+    # Define a regular expression pattern to match symbols excluding '.'
+    pattern = r'[^\w\s.]'  # Matches any character that is not a letter, digit, whitespace, or '.'
 
     # Use the sub() function to replace all matches of the pattern with an empty string
     clean_text = re.sub(pattern, '', name)
@@ -186,14 +185,16 @@ def remove_symbols(name):
     return clean_text
 
 
-sector_selection(sector_scraper("financials"))
-sector_selection(sector_scraper("technology"))
-sector_selection(sector_scraper("healthcare"))
-sector_selection(sector_scraper("industrials"))
-sector_selection(sector_scraper("cosumer-discretionary"))
-sector_selection(sector_scraper("materials"))
-sector_selection(sector_scraper("real-estate"))
-sector_selection(sector_scraper("communicaion-services"))
-sector_selection(sector_scraper("energy"))
-sector_selection(sector_scraper("consumer-staples"))
-sector_selection(sector_scraper("utilities"))
+#sector_selection(sector_scraper("financials"))
+#sector_selection(sector_scraper("technology"))
+#sector_selection(sector_scraper("healthcare"))
+#sector_selection(sector_scraper("industrials"))
+#sector_selection(sector_scraper("consumer-discretionary"))
+#sector_selection(sector_scraper("materials"))
+#sector_selection(sector_scraper("real-estate"))
+#sector_selection(sector_scraper("communication-services"))
+#sector_selection(sector_scraper("energy"))
+#sector_selection(sector_scraper("consumer-staples"))
+#sector_selection(sector_scraper("utilities"))
+#sector_scraper("communication-services")
+sector_selection("communication-services")

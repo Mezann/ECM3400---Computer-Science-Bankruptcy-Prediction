@@ -63,7 +63,7 @@ for idx, th_tag in enumerate(th_tags, start=1):
 
 
 # Create the subfolder if it doesn't exist
-subfolder = "Dataset"
+subfolder = "test"
 if not os.path.exists(subfolder):
     os.makedirs(subfolder)
 

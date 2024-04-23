@@ -78,7 +78,11 @@ for idx, th_tag in enumerate(th_tags, start=1):
     row_counter += 1
 
     
+# Create the subfolder if it doesn't exist
+subfolder = "Dataset"
+if not os.path.exists(subfolder):
+    os.makedirs(subfolder)
 
-# Save the Excel file
-file_path = os.path.join("Dataset", name + "_Ratios.xlsx")
+# Save the Excel file into the subfolder with the company name
+file_path = os.path.join(subfolder, name + "_Ratios.xlsx")
 wb.save(file_path)
