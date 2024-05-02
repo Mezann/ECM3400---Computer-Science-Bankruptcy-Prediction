@@ -309,8 +309,8 @@ def read_spreadsheet(filename, category_names):
     return category_names_with_name, rows
 
 
-#filename = "technologyCompiled.xlsx"
-filename = "bankruptciesCompiled.xlsx"
+filename = "technologyCompiled.xlsx"
+#filename = "bankruptciesCompiled.xlsx"
 #filename = "Bankrupcies/Bird Global_Ratios.xlsx"
 category_names = ["Market Cap Growth", "P/OCF Ratio", "Debt / Equity Ratio", "Quick Ratio", "Return on Assets (ROA)", "Return on Capital (ROIC)", "Buyback Yield / Dilution"]
 category_names_with_name, rows = read_spreadsheet(filename, category_names)
