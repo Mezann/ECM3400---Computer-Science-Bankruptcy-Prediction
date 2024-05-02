@@ -33,6 +33,7 @@ column_mapping = {
     "Dividend Yield": ["Dividend Yield"],
     "Payout Ratio": ["Payout Ratio"],
     "Buyback Yield / Dilution": ["Buyback Yield / Dilution"],
+    "Total Shareholder Return": ["Total Shareholder Return"],
     "Year": ["Year"]
 }
 
@@ -92,6 +93,6 @@ def compile_excel_files(input_folder, output_file):
         print("No data processed. Workbook not saved.")
 
 # Example usage:
-input_folder = "Dataset/communication-services"
-output_file = "communication-servicesCompiled.xlsx"
+input_folder = "Dataset/technology"
+output_file = "technologyCompiled.xlsx"
 compile_excel_files(input_folder, output_file)

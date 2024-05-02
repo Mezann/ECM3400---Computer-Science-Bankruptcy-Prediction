@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup
 from openpyxl import Workbook
 
 def sector_scraper(sector):
+    ''' Obtains a list of all the companies in a chosen sector, picks the first 199 and puts them in an excel spreadsheet '''
+
 
     # URL of the webpage
     url = "https://stockanalysis.com/stocks/sector/" + sector + "/"
@@ -73,6 +75,7 @@ def sector_scraper(sector):
     return sector
 
 def scrape_and_create_excel(sym, name, sector):
+    '''Scrapes a specific company's financial ratios and puts it in an excel spreadsheet '''
 
     # URL of the webpage
     url = "https://stockanalysis.com/stocks/" + sym + "/financials/ratios/"
@@ -152,7 +155,10 @@ def scrape_and_create_excel(sym, name, sector):
     file_path = os.path.join(sector_folder, name + " Ratios.xlsx")
     wb.save(file_path)
 
+
 def sector_selection(sector):
+    '''Compiles a spreadsheet of all the financial ratios from the top 199 companies in a specific sector'''
+
     # Define the file path relative to the current directory
     file_path = "Dataset/" + sector + "SectorInformation.xlsx"
 
@@ -197,4 +203,5 @@ def remove_symbols(name):
 #sector_selection(sector_scraper("consumer-staples"))
 #sector_selection(sector_scraper("utilities"))
 #sector_scraper("communication-services")
-sector_selection("communication-services")
+sector_selection("technology")
+#scrape_and_create_excel("SDCCQ","SmileDirectClub", "Bankrupcies")
